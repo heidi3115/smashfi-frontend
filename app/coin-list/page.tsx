@@ -6,12 +6,18 @@ import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
 import { FaCircleArrowDown } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
+import { FaStar } from "react-icons/fa";
+
 import toast from "react-hot-toast";
 import { Coin } from "@/app/types/coin";
+import {useFavoriteStore} from "@/app/store/useFavoriteStore";
 
 
 export default function CoinList() {
     const [coins, setCoins] = useState<Coin[]>([]);
+    const { favorites, toggleFavorite, isFavorited } = useFavoriteStore();
+
+    console.log(favorites,'favorite 목록')
 
     useEffect(() => {
         const fetchCoins = async () => {
@@ -25,11 +31,15 @@ export default function CoinList() {
     }, []);
 
 
-    const handleFavoriteAdd = () => {
-        toast.success("Successfully added!");
-    };
-    const handleFavoriteRemove = () => {
-        toast.success("Successfully deleted");
+    const handleFavoriteToggle = (coinId: string) => {
+        const favoritedStatus = isFavorited(coinId);
+        toggleFavorite(coinId);
+
+        if (favoritedStatus) {
+            toast.success("Successfully deleted!");
+        } else {
+            toast.success("Successfully added!");
+        }
     }
 
     return (
@@ -73,7 +83,13 @@ export default function CoinList() {
                 {coins.map((coin) => (
                     <tr key={coin.id}>
                         <td className="flex items-center gap-2">
-                            <span onClick={handleFavoriteAdd}><CiStar /></span>
+                            <span onClick={() => handleFavoriteToggle(coin.id)}>
+                                {isFavorited(coin.id) ? (
+                                    <FaStar className="text-yellow-400" />
+                                ) : (
+                                    <CiStar />
+                                )}
+                            </span>
                             <Image
                                 src={coin.icon}
                                 alt={coin.name}
