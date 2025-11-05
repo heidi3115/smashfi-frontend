@@ -1,7 +1,7 @@
 import {FaStar} from "react-icons/fa";
 import {CiStar} from "react-icons/ci";
 import Image from "next/image";
-import {formatNumber} from "@/utils/commonUtils";
+import {formatNumber, formatPrice} from "@/utils/commonUtils";
 import {Coin} from "@/app/types/coin";
 
 type CoinListRowProps = {
@@ -16,7 +16,7 @@ export const CoinListRow = ({
                                 isFavorited,
 }:CoinListRowProps) => {
     return (
-        <tr>
+        <tr className="m-10">
             <td className="flex items-center gap-2">
                 <button onClick={() => onToggleFavorite(coin.id)}>
                     {isFavorited(coin.id) ? (
@@ -32,12 +32,12 @@ export const CoinListRow = ({
                     height={24}
                 />
                 <span className="font-semibold">{coin.symbol}</span>
-                <span className="text-gray-400">{coin.name}</span>
+                <span className="text-gray-400 text-sm">{coin.name}</span>
             </td>
             <td>
                 <div className="flex flex-col gap-1">
-                    <span>{coin.price}</span>
-                    <span>{formatNumber(coin.price)}</span>
+                    <span>{formatPrice(coin.price.toFixed(2))}</span>
+                    <span className="text-gray-400 text-xs">{formatNumber(coin.price)}</span>
                 </div>
             </td>
             <td className={`text-center ${coin.change24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>

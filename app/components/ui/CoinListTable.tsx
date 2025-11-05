@@ -52,10 +52,9 @@ export const CoinListTable = ({coins, onToggleFavorite, isFavorited}: TableProps
         getSortedRowModel: getSortedRowModel(),
     })
 
-
     return (
      <div>
-         <table className="min-w-full border-separate border-spacing-y-2 py-2">
+         <table className="min-w-full border-separate border-spacing-y-6 py-2">
              <thead>
              {table.getHeaderGroups().map(headerGroup => (
                  <tr key={headerGroup.id} className="text-gray-400 text-sm">

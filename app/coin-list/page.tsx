@@ -58,7 +58,7 @@ export default function CoinList() {
     return (
         <div className="p-20">
             <h1 className="text-3xl font-bold py-5">Coin List</h1>
-            <div className="flex gap-5 font-bold py-5">
+            <div className="flex text-lg gap-10 font-bold py-5">
                 <button
                     onClick={() => setCurrentTab("all")}
                     className={`cursor-pointer ${currentTab === "all" ? "text-border" : "text-gray-400"}`}
