@@ -13,5 +13,9 @@ export const formatPrice = (num: number | string): string => {
     const numVal = Number(num);
 
     if(isNaN(numVal)) return "-";
-    return numVal.toLocaleString();
+
+    return numVal.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    })
 }

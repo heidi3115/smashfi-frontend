@@ -36,7 +36,7 @@ export const CoinListRow = ({
             </td>
             <td>
                 <div className="flex flex-col gap-1">
-                    <span>{formatPrice(coin.price.toFixed(2))}</span>
+                    <span>{formatPrice(coin.price)}</span>
                     <span className="text-gray-400 text-xs">{formatNumber(coin.price)}</span>
                 </div>
             </td>
