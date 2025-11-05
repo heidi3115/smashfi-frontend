@@ -1,4 +1,4 @@
-"use Client";
+"use client";
 
 import { IoSearchOutline } from "react-icons/io5";
 

@@ -58,7 +58,7 @@ export const CoinListTable = ({coins, onToggleFavorite, isFavorited}: TableProps
 
     return (
      <div>
-         <table className="min-w-full border-separate border-spacing-y-2">
+         <table className="min-w-full border-separate border-spacing-y-2 py-2">
              <thead>
              {table.getHeaderGroups().map(headerGroup => (
                  <tr key={headerGroup.id} className="text-gray-400 text-sm">
@@ -74,13 +74,13 @@ export const CoinListTable = ({coins, onToggleFavorite, isFavorited}: TableProps
              {table.getRowModel().rows.map((row) => (
                  <tr key={row.id}>
                      <td className="flex items-center gap-2">
-                            <span onClick={() => onToggleFavorite(row.original.id)}>
+                            <button onClick={() => onToggleFavorite(row.original.id)}>
                                 {isFavorited(row.original.id) ? (
                                     <FaStar className="text-yellow-400" />
                                 ) : (
                                     <CiStar />
                                 )}
-                            </span>
+                            </button>
                          <Image
                              src={row.original.icon}
                              alt={row.original.name}
@@ -96,7 +96,9 @@ export const CoinListTable = ({coins, onToggleFavorite, isFavorited}: TableProps
                              <span>{formatNumber(row.original.price)}</span>
                          </div>
                      </td>
-                     <td className="text-center">{row.original.change24h}%</td>
+                     <td className={`text-center ${row.original.change24h >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                         {row.original.change24h > 0 ? "+" : ""}{row.original.change24h}%
+                     </td>
                      <td className="text-right">{formatNumber(row.original.volume24h)}</td>
                      <td className="text-right">{formatNumber(row.original.marketCap)}</td>
                  </tr>

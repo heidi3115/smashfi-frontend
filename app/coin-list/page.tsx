@@ -11,30 +11,38 @@ import { CoinListTable } from "@/app/components/ui/CoinListTable";
 
 export default function CoinList() {
     const [coins, setCoins] = useState<Coin[]>([]);
-    const { favorites, toggleFavorite, isFavorited } = useFavoriteStore();
+    const { toggleFavorite, isFavorited } = useFavoriteStore();
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search);
+
+    const [currentTab, setCurrentTab] = useState<"all" | "favorite">("all");
 
     useEffect(() => {
         const fetchCoins = async () => {
             const res = await fetch('/api/coins');
             const data: Coin[] = await res.json();
+
             setCoins(data);
         };
+
         fetchCoins();
     }, []);
 
-    const filteredCoins = useMemo(() => {
-        if (!debouncedSearch) return coins;
+    const displayCoins = useMemo(() => {
+        const list = currentTab === "favorite"
+            ? coins.filter(coin => isFavorited(coin.id))
+            : coins;
 
-        return coins.filter((coin) =>
+        if (!debouncedSearch) return list;
+
+        return list.filter((coin) =>
             [coin.name, coin.symbol]
                 .filter(Boolean)
                 .some((it) =>
                     it.toLowerCase().includes(debouncedSearch.toLowerCase())
                 )
-        );
-    }, [coins, debouncedSearch]);
+        )
+    }, [coins, debouncedSearch, currentTab, isFavorited]);
 
     const handleFavoriteToggle = (coinId: string) => {
         const favoritedStatus = isFavorited(coinId);
@@ -49,10 +57,21 @@ export default function CoinList() {
 
     return (
         <div className="p-20">
-            <h1 className="text-2xl">Coin List</h1>
-            <div className="flex gap-5">
-                <div>All</div>
-                <div>My favorite</div>
+            <h1 className="text-3xl font-bold py-5">Coin List</h1>
+            <div className="flex gap-5 font-bold py-5">
+                <button
+                    onClick={() => setCurrentTab("all")}
+                    className={`cursor-pointer ${currentTab === "all" ? "text-border" : "text-gray-400"}`}
+
+                >
+                    All
+                </button>
+                <button
+                    onClick={() => setCurrentTab("favorite")}
+                    className={`cursor-pointer ${currentTab === "favorite" ? "text-border" : "text-gray-400"}`}
+                >
+                    My favorite
+                </button>
             </div>
             <SearchInput
                 placeholder="Search something...(BTC, Bitcoin, B...)"
@@ -60,7 +79,7 @@ export default function CoinList() {
                 onChange={setSearch}
             />
             <CoinListTable
-                coins={filteredCoins}
+                coins={displayCoins}
                 onToggleFavorite={handleFavoriteToggle}
                 isFavorited={isFavorited}
             />
