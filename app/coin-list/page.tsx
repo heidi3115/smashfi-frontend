@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import {useEffect, useMemo, useState} from "react";
 import {formatNumber} from "@/utils/commonUtils";
 import Image from "next/image";
 import { IoSearchOutline } from "react-icons/io5";
@@ -16,8 +16,30 @@ import {useFavoriteStore} from "@/app/store/useFavoriteStore";
 export default function CoinList() {
     const [coins, setCoins] = useState<Coin[]>([]);
     const { favorites, toggleFavorite, isFavorited } = useFavoriteStore();
+    const [search, setSearch] = useState("");
+    const [debouncedSearch, setDebouncedSearch] = useState("");
 
-    console.log(favorites,'favorite 목록')
+
+    useEffect(() => {
+        const handler = setTimeout(() => {
+            setDebouncedSearch(search);
+        }, 500);
+
+        return () => clearTimeout(handler);
+    }, [search]);
+
+
+    const filteredCoins = useMemo(() => {
+        if (!debouncedSearch) return coins;
+
+        return coins.filter((coin) =>
+        [coin.name, coin.symbol]
+            .filter(Boolean)
+            .some((it) =>
+                it.toLowerCase().includes(debouncedSearch.toLowerCase())
+            )
+        );
+    }, [coins, debouncedSearch]);
 
     useEffect(() => {
         const fetchCoins = async () => {
@@ -54,6 +76,7 @@ export default function CoinList() {
                 <input
                     type="text"
                     placeholder="Search something...(BTC, Bitcoin, B...)"
+                    onChange={(e) => setSearch(e.target.value)}
                     className="w-full bg-transparent text-gray-200 placeholder-gray-500 focus:outline-none"
                 />
             </div>
@@ -80,7 +103,7 @@ export default function CoinList() {
                 </tr>
                 </thead>
                 <tbody>
-                {coins.map((coin) => (
+                {filteredCoins.map((coin) => (
                     <tr key={coin.id}>
                         <td className="flex items-center gap-2">
                             <span onClick={() => handleFavoriteToggle(coin.id)}>
