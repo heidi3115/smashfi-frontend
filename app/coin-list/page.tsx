@@ -3,7 +3,6 @@
 import {useEffect, useMemo, useState} from "react";
 import {formatNumber} from "@/utils/commonUtils";
 import Image from "next/image";
-import { IoSearchOutline } from "react-icons/io5";
 import { FaCircleArrowDown } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
 import { FaStar } from "react-icons/fa";
@@ -11,35 +10,15 @@ import { FaStar } from "react-icons/fa";
 import toast from "react-hot-toast";
 import { Coin } from "@/app/types/coin";
 import {useFavoriteStore} from "@/app/store/useFavoriteStore";
+import SearchInput from "@/app/components/SearchInput";
+import useDebounce from "@/app/hooks/useDebounce";
 
 
 export default function CoinList() {
     const [coins, setCoins] = useState<Coin[]>([]);
     const { favorites, toggleFavorite, isFavorited } = useFavoriteStore();
     const [search, setSearch] = useState("");
-    const [debouncedSearch, setDebouncedSearch] = useState("");
-
-
-    useEffect(() => {
-        const handler = setTimeout(() => {
-            setDebouncedSearch(search);
-        }, 500);
-
-        return () => clearTimeout(handler);
-    }, [search]);
-
-
-    const filteredCoins = useMemo(() => {
-        if (!debouncedSearch) return coins;
-
-        return coins.filter((coin) =>
-        [coin.name, coin.symbol]
-            .filter(Boolean)
-            .some((it) =>
-                it.toLowerCase().includes(debouncedSearch.toLowerCase())
-            )
-        );
-    }, [coins, debouncedSearch]);
+    const debouncedSearch = useDebounce(search);
 
     useEffect(() => {
         const fetchCoins = async () => {
@@ -52,6 +31,17 @@ export default function CoinList() {
         fetchCoins();
     }, []);
 
+    const filteredCoins = useMemo(() => {
+        if (!debouncedSearch) return coins;
+
+        return coins.filter((coin) =>
+        [coin.name, coin.symbol]
+            .filter(Boolean)
+            .some((it) =>
+                it.toLowerCase().includes(debouncedSearch.toLowerCase())
+            )
+        );
+    }, [coins, debouncedSearch]);
 
     const handleFavoriteToggle = (coinId: string) => {
         const favoritedStatus = isFavorited(coinId);
@@ -71,15 +61,11 @@ export default function CoinList() {
                 <div>All</div>
                 <div>My favorite</div>
             </div>
-            <div className="flex gap-2 items-center bg-[#1e1e1e] rounded-full px-4 py-2 w-full mx-auto shadow-md">
-                <div><IoSearchOutline color="gray" /></div>
-                <input
-                    type="text"
-                    placeholder="Search something...(BTC, Bitcoin, B...)"
-                    onChange={(e) => setSearch(e.target.value)}
-                    className="w-full bg-transparent text-gray-200 placeholder-gray-500 focus:outline-none"
-                />
-            </div>
+            <SearchInput
+                placeholder="Search something...(BTC, Bitcoin, B...)"
+                value={search}
+                onChange={setSearch}
+            />
             <table className="min-w-full border-separate border-spacing-y-2">
                 <thead>
                 <tr className='text-gray-400 text-sm'>
