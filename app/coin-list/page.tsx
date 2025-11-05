@@ -7,15 +7,16 @@ import { IoSearchOutline } from "react-icons/io5";
 import { FaCircleArrowDown } from "react-icons/fa6";
 import { CiStar } from "react-icons/ci";
 import toast from "react-hot-toast";
+import { Coin } from "@/app/types/coin";
 
 
 export default function CoinList() {
-    const [coins, setCoins] = useState([]);
+    const [coins, setCoins] = useState<Coin[]>([]);
 
     useEffect(() => {
         const fetchCoins = async () => {
             const res = await fetch('/api/coins');
-            const data = await res.json();
+            const data: Coin[] = await res.json();
 
             setCoins(data);
         };
