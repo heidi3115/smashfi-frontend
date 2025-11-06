@@ -8,7 +8,3 @@ export type Coin = {
     volume24h: number;
     marketCap: number;
 };
-
-export type SortKey = 'price' | 'change24h' | 'volume24h' | 'marketCap';
-export type SortOrder = 'asc' | 'desc';
-export type TapType = 'all' | 'favorite';

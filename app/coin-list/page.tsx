@@ -2,12 +2,15 @@
 
 import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
-import { Coin } from "@/app/types/coin";
+import {Coin} from "@/app/types/coin";
 import { useFavoriteStore } from "@/app/store/useFavoriteStore";
 import SearchInput from "@/app/components/SearchInput";
 import useDebounce from "@/app/hooks/useDebounce";
 import { CoinListTable } from "@/app/components/ui/CoinListTable";
+import {Tab, TabItem} from "@/app/components/Tab";
 
+
+type CoinTab = "all" | "favorite"
 
 export default function CoinList() {
     const [coins, setCoins] = useState<Coin[]>([]);
@@ -15,7 +18,13 @@ export default function CoinList() {
     const [search, setSearch] = useState("");
     const debouncedSearch = useDebounce(search);
 
-    const [currentTab, setCurrentTab] = useState<"all" | "favorite">("all");
+    const [currentTab, setCurrentTab] = useState<CoinTab>("all");
+
+    const tabItems: TabItem<CoinTab>[] = [
+        {value: "all", label: "All"},
+        {value: "favorite", label: "My Favorite"},
+    ]
+
 
     useEffect(() => {
         const fetchCoins = async () => {
@@ -58,21 +67,7 @@ export default function CoinList() {
     return (
         <div className="p-20">
             <h1 className="text-3xl font-bold py-5">Coin List</h1>
-            <div className="flex text-lg gap-10 font-bold py-5">
-                <button
-                    onClick={() => setCurrentTab("all")}
-                    className={`cursor-pointer ${currentTab === "all" ? "text-border" : "text-gray-400"}`}
-
-                >
-                    All
-                </button>
-                <button
-                    onClick={() => setCurrentTab("favorite")}
-                    className={`cursor-pointer ${currentTab === "favorite" ? "text-border" : "text-gray-400"}`}
-                >
-                    My favorite
-                </button>
-            </div>
+            <Tab items={tabItems} activeTab={currentTab} onTabChange={setCurrentTab} />
             <SearchInput
                 placeholder="Search something...(BTC, Bitcoin, B...)"
                 value={search}
