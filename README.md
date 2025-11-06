@@ -125,6 +125,7 @@ export async function GET() {
  ### 구현하지 못한 부분
 - 에러 처리 및 로딩 상태
   - API 호출 실패 시 에러메세지 표시
+  - 로딩 상태 표시(loading 아이콘 또는 Skeleton UI 적용)
 - 빈 화면 UI
   - 검색 결과 없을 때 빈 안내 화면
   - 즐겨찾기 없을 때 빈 안내 화면
