@@ -1,15 +1,24 @@
 import {FaCircleArrowDown, FaCircleArrowUp} from "react-icons/fa6";
+import {Column} from "@tanstack/react-table";
 
-type SortableHeaderProps = {
-    column: any;
+type SortableHeaderProps<TData> = {
+    column: Column<TData, unknown>;
     label: string;
     align?: "start" | "center" | "end";
 }
 
-export const SortableHeader = ({column, label, align = "start"}: SortableHeaderProps) => {
+export const SortableHeader = <TData,>({
+                                   column,
+                                   label,
+                                   align = "start",
+}: SortableHeaderProps<TData>) => {
     const sorted = column.getIsSorted();
 
-    const alignClass = align === "center" ? "justify-center" : align === "end" ? "justify-end" : "justify-start";
+    const alignClass = {
+        start: "justify-start",
+        center: "justify-center",
+        end: "justify-end",
+    };
 
     return (
         <button
