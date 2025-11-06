@@ -1,13 +1,12 @@
-import {FaStar} from "react-icons/fa";
-import {CiStar} from "react-icons/ci";
 import Image from "next/image";
 import {formatNumber, formatPrice} from "@/utils/commonUtils";
 import {Coin} from "@/app/types/coin";
+import {FavoriteButton} from "@/app/components/ui/FavoriteButton";
 
 type CoinListRowProps = {
     coin: Coin;
-    onToggleFavorite: (coinId: string) => void;
-    isFavorited: (coinId: string) => boolean;
+    onToggleFavorite: () => void;
+    isFavorited: boolean;
 }
 
 export const CoinListRow = ({
@@ -15,16 +14,15 @@ export const CoinListRow = ({
                                 onToggleFavorite,
                                 isFavorited,
 }:CoinListRowProps) => {
+
+    console.log("isFavorited,",isFavorited)
     return (
         <tr className="m-10">
             <td className="flex items-center gap-2">
-                <button onClick={() => onToggleFavorite(coin.id)}>
-                    {isFavorited(coin.id) ? (
-                        <FaStar className="text-yellow-400" />
-                    ) : (
-                        <CiStar />
-                    )}
-                </button>
+                <FavoriteButton
+                    isFavorited={isFavorited}
+                    onToggle={onToggleFavorite}
+                />
                 <Image
                     src={coin.icon}
                     alt={coin.name}

@@ -71,8 +71,8 @@ export const CoinListTable = ({coins, onToggleFavorite, isFavorited}: TableProps
                  <CoinListRow
                     key={it.id}
                     coin={it.original}
-                    onToggleFavorite={onToggleFavorite}
-                    isFavorited={isFavorited}
+                    onToggleFavorite={() => onToggleFavorite(it.original.id)}
+                    isFavorited={isFavorited(it.original.id)}
                  />
              ))}
              </tbody>
