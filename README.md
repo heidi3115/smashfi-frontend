@@ -121,7 +121,7 @@ export async function GET() {
 - Next.js Route 핸들러를 활용한 API
 - 클라이언트에서 fetch("/api/coins")로 호출
 
-## 시간 내 구현하지 못한 부분 & 보완하고 싶은 점
+## 구현하지 못한 부분 & 보완하고 싶은 점
  ### 구현하지 못한 부분
 - 에러 처리 및 로딩 상태
   - API 호출 실패 시 에러메세지 표시
@@ -132,7 +132,7 @@ export async function GET() {
 - 즐겨찾기 리스트 즉시 갱신
   - My favorite 탭에서 즐겨찾기 해제 시 리스트가 즉시 갱신되지않음
 
-### 개선하고 싶은점
+### 보완하고 싶은점
 - 대용량 데이터 최적화
   - 추후 10,000가지 넘는 데이터 발생 시 서버 사이드 pagination
   - 혹은 infinite scroll
