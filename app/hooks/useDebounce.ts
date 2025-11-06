@@ -6,14 +6,14 @@ import { useEffect, useState } from "react";
  * 예) const debouncedSearch = useDebounce(search, 500)
   */
 
-export default function useDebounce<T>(propValue: T, delay: number = 500): T {
-    const [value, setValue] = useState(propValue);
+export function useDebounce<T>(value: T, delay: number = 500): T {
+    const [debouncedValue, setDebouncedValue] = useState(value);
 
     useEffect(() => {
-        const handler = setTimeout(() => setValue(propValue), delay);
+        const handler = setTimeout(() => setDebouncedValue(value), delay);
 
         return () => clearTimeout(handler);
-    }, [propValue, delay]);
+    }, [value, delay]);
 
-    return value;
+    return debouncedValue;
 }

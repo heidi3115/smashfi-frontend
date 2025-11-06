@@ -10,7 +10,7 @@ import {
 } from "@tanstack/react-table";
 import { Coin } from "@/app/types/coin";
 import { SortableHeader } from "@/app/components/ui/SortableHeader";
-import {CoinListRow} from "@/app/components/ui/CoinListRow";
+import {CoinListRow} from "@/app/components/features/coins/CoinListRow";
 
 type TableProps = {
     coins: Coin[]

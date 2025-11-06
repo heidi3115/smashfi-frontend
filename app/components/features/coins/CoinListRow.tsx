@@ -1,7 +1,7 @@
 import Image from "next/image";
 import {formatNumber, formatPrice} from "@/utils/commonUtils";
 import {Coin} from "@/app/types/coin";
-import {FavoriteButton} from "@/app/components/ui/FavoriteButton";
+import {FavoriteButton} from "@/app/components/features/coins/FavoriteButton";
 
 type CoinListRowProps = {
     coin: Coin;

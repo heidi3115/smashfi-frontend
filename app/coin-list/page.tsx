@@ -4,10 +4,10 @@ import { useEffect, useMemo, useState } from "react";
 import toast from "react-hot-toast";
 import {Coin} from "@/app/types/coin";
 import { useFavoriteStore } from "@/app/store/useFavoriteStore";
-import SearchInput from "@/app/components/SearchInput";
-import useDebounce from "@/app/hooks/useDebounce";
+import SearchInput from "@/app/components/common/SearchInput";
+import { useDebounce } from "@/app/hooks/useDebounce";
 import { CoinListTable } from "@/app/components/ui/CoinListTable";
-import {Tab, TabItem} from "@/app/components/Tab";
+import {Tab, TabItem} from "@/app/components/common/Tab";
 
 
 type CoinTab = "all" | "favorite"
